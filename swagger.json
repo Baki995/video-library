@@ -1,0 +1,19 @@
+
+   Error 
+
+  Call to undefined function Vigneshc91\LaravelSwagger\starts_with()
+
+  at vendor/vigneshc91/laravel-swagger/src/Generator.php:133
+    129▕     protected function getRouteUri(Route $route)
+    130▕     {
+    131▕         $uri = $route->uri();
+    132▕ 
+  ➜ 133▕         if (!starts_with($uri, '/')) {
+    134▕             $uri = '/' . $uri;
+    135▕         }
+    136▕ 
+    137▕         return $uri;
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))

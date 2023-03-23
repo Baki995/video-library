@@ -1,0 +1,997 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "APIs For Video Library",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "Register",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "c_password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Jon Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12#@"
+                                    },
+                                    "c_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12#@"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Register successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Bojan Djurdjevic"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "djurdjevicbojan123@gmail.com"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-03-12T15:29:23.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-03-12T15:29:23.000000Z"
+                                        },
+                                        "id": {
+                                            "type": "string",
+                                            "example": "98abc412-273c-4125-85c4-66cdb87ac8e3"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Wrong register",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "Login",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12#@"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4NjM0NDU2LCJleHAiOjE2Nzg2MzgwNTYsIm5iZiI6MTY3ODYzNDQ1NiwianRpIjoiM05VcVBvVnU2TjNlS21WMCIsInN1YiI6Ijk4YWJhZmZkLWY4MzQtNDc4YS1iMGZhLTI4YzFjZDE0MDczYiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.w6DivCgHoTaOpmpESWerCw1yanlJxVzY1Y1hwgRBFP4"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Wrong login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "invalid login credentials"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/refresh-token": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "Refresh token",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4NjM0NDU2LCJleHAiOjE2Nzg2MzgwNTYsIm5iZiI6MTY3ODYzNDQ1NiwianRpIjoiM05VcVBvVnU2TjNlS21WMCIsInN1YiI6Ijk4YWJhZmZkLWY4MzQtNDc4YS1iMGZhLTI4YzFjZDE0MDczYiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.w6DivCgHoTaOpmpESWerCw1yanlJxVzY1Y1hwgRBFP4"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Refresh token error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Token has expired"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "Me",
+                "responses": {
+                    "200": {
+                        "description": "Register successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Bojan Djurdjevic"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "djurdjevicbojan123@gmail.com"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-03-12T15:29:23.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-03-12T15:29:23.000000Z"
+                                        },
+                                        "id": {
+                                            "type": "string",
+                                            "example": "98abc412-273c-4125-85c4-66cdb87ac8e3"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Wrong register",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Authorization Token not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/movies": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "operationId": "getMovies",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "myMovies",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movie object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "current_page": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "first_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/movies?page=1"
+                                        },
+                                        "from": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "last_page": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "last_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/movies?page=16"
+                                        },
+                                        "next_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/movies?page=2"
+                                        },
+                                        "path": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/movies"
+                                        },
+                                        "per_page": {
+                                            "type": "number",
+                                            "example": "10"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/movies?page=1"
+                                        },
+                                        "to": {
+                                            "type": "number",
+                                            "example": "4"
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "example": "32"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "studio": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "runtime": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "genre": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "favorite": {
+                                                        "type": "boolean",
+                                                        "example": ""
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": [
+                                                {
+                                                    "id": "aae988c1-72e0-4096-9469-bd66e381a115",
+                                                    "title": "Old Boy",
+                                                    "studio": "New Line Cinema",
+                                                    "slug": "old-boy-dgufzqe2",
+                                                    "runtime": "03:56:30",
+                                                    "genre": "Action",
+                                                    "description": "Cat again, sitting on a crimson velvet cushion; and, last of all the while, and fighting for the moment how large she had finished, her sister sat still just as the White Rabbit",
+                                                    "created_at": "2023-03-12T16:21:40.000000Z",
+                                                    "updated_at": "2023-03-12T16:21:40.000000Z",
+                                                    "favorite": false
+                                                },
+                                                {
+                                                    "id": "6e6fb347-1958-4f67-8d12-86f61d9dbba5",
+                                                    "title": "Toy Story 3",
+                                                    "studio": "Lucasfilm",
+                                                    "slug": "toy-story-3-lecvbkso",
+                                                    "runtime": "01:06:38",
+                                                    "genre": "Family",
+                                                    "description": "And how do you know about it, so she went out, but it was quite impossible to say it out again, and she thought it must make me smaller, I can creep under the sea,",
+                                                    "created_at": "2023-03-12T16:21:40.000000Z",
+                                                    "updated_at": "2023-03-12T16:21:40.000000Z",
+                                                    "favorite": false
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Token is Expired"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Movie"
+                ],
+                "operationId": "createMovie",
+                "requestBody": {
+                    "description": "Movie created object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "The Aviator"
+                                    },
+                                    "studio": {
+                                        "type": "string",
+                                        "example": "Fox Searchlight Pictures"
+                                    },
+                                    "runtime": {
+                                        "type": "string",
+                                        "example": "00:35:15"
+                                    },
+                                    "genre": {
+                                        "type": "string",
+                                        "example": "Documentary"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "The soldiers were always getting up and leave the room, when her eye fell upon a time there could be beheaded, and that is rather a complaining tone, 'and they drew all manner of."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Movie object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "994491d4-933f-453f-beae-1b37c3d82d91"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "The Aviator"
+                                        },
+                                        "studio": {
+                                            "type": "string",
+                                            "example": "Fox Searchlight Pictures"
+                                        },
+                                        "slug": {
+                                            "type": "string",
+                                            "example": "the-aviator"
+                                        },
+                                        "runtime": {
+                                            "type": "string",
+                                            "example": "00:35:15"
+                                        },
+                                        "genre": {
+                                            "type": "string",
+                                            "example": "Documentary"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "The soldiers were always getting up and leave the room, when her eye fell upon a time there could be beheaded, and that is rather a complaining tone, 'and they drew all manner of."
+                                        },
+                                        "created_at": {
+                                            "type": "Date",
+                                            "example": "2023-03-12T14:32:54.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "Date",
+                                            "example": "2023-03-12T14:32:54.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Authorization Token not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/movies/{id}": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "operationId": "getMovie",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movie object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "994491d4-933f-453f-beae-1b37c3d82d91"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "The Aviator"
+                                        },
+                                        "studio": {
+                                            "type": "string",
+                                            "example": "Fox Searchlight Pictures"
+                                        },
+                                        "slug": {
+                                            "type": "string",
+                                            "example": "the-aviator"
+                                        },
+                                        "runtime": {
+                                            "type": "string",
+                                            "example": "00:35:15"
+                                        },
+                                        "genre": {
+                                            "type": "string",
+                                            "example": "Documentary"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "The soldiers were always getting up and leave the room, when her eye fell upon a time there could be beheaded, and that is rather a complaining tone, 'and they drew all manner of."
+                                        },
+                                        "created_at": {
+                                            "type": "Date",
+                                            "example": "2023-03-12T14:32:54.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "Date",
+                                            "example": "2023-03-12T14:32:54.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Authorization Token not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Wrong login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Movie does not exist"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Movie"
+                ],
+                "operationId": "updateMovie",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "description": "Movie created object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "The Aviator"
+                                    },
+                                    "studio": {
+                                        "type": "string",
+                                        "example": "Fox Searchlight Pictures"
+                                    },
+                                    "runtime": {
+                                        "type": "string",
+                                        "example": "00:35:15"
+                                    },
+                                    "genre": {
+                                        "type": "string",
+                                        "example": "Documentary"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "The soldiers were always getting up and leave the room, when her eye fell upon a time there could be beheaded, and that is rather a complaining tone, 'and they drew all manner of."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Movie object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "994491d4-933f-453f-beae-1b37c3d82d91"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "The Aviator"
+                                        },
+                                        "studio": {
+                                            "type": "string",
+                                            "example": "Fox Searchlight Pictures"
+                                        },
+                                        "slug": {
+                                            "type": "string",
+                                            "example": "the-aviator"
+                                        },
+                                        "runtime": {
+                                            "type": "string",
+                                            "example": "00:35:15"
+                                        },
+                                        "genre": {
+                                            "type": "string",
+                                            "example": "Documentary"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "The soldiers were always getting up and leave the room, when her eye fell upon a time there could be beheaded, and that is rather a complaining tone, 'and they drew all manner of."
+                                        },
+                                        "created_at": {
+                                            "type": "Date",
+                                            "example": "2023-03-12T14:32:54.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "Date",
+                                            "example": "2023-03-12T14:32:54.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Authorization Token not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Movie does not exist"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Movie"
+                ],
+                "operationId": "deleteMovie",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movie object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Authorization Token not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Movie does not exist"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/toggle-movie/{id}": {
+            "post": {
+                "tags": [
+                    "Movie"
+                ],
+                "operationId": "toggleMovie",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movie object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "follow": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Authorization Token not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Movie does not exist"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "api_key_security_example": []
+        }
+    ]
+}

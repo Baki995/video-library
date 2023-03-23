@@ -1,0 +1,30 @@
+version: '3'
+services:
+    app:
+        build:
+            context: ./docker
+        ports:  
+            - "8000:80"
+        volumes:
+            - .:/var/www/html
+
+    postgres:
+        image: postgres:9.5-alpine
+        restart: unless-stopped
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres:/var/lib/postgresql/data
+            - ./docker/postgres:/docker-entrypoint-initdb.d
+        env_file:
+            - .env
+        environment:
+            POSTGRES_USER: ${DB_USERNAME:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-kf20fi309}
+            POSTGRES_DB: ${DB_DATABASE}
+            PGDATA: /data/postgres
+
+
+volumes:
+    postgres:
+    redis_data:
